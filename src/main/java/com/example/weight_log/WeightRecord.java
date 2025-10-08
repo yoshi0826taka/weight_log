@@ -1,41 +1,55 @@
 package com.example.weight_log;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.sql.Date;
-import java.sql.Timestamp; 
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "weight_records")
-@Data
+@Table(name = "wetight_records")
 public class WeightRecord {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // user_id 
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)                  // usersテーブルと関連付け
-    @JoinColumn(name = "user_id", nullable = false)     // usersテーブルのuser_idカラムと関連付け
-    private User user; // ユーザークラス
+    private Long userId;
 
-    private Date recordDate; // 記録日
-    private Double weight;  // 体重
-    private Double height; // 身長
-    private Double bmi; // BMI
+    private Double weight;
 
-    private String breakfast; // 朝食
-    private String lunch; // 昼食
-    private String dinner;  // 夕食
+    private LocalDateTime recordedAt;
 
-    private Double bust; // バスト
-    private Double waist; // ウエスト
-    private Double hip; // ヒップ
-    private Double arm; // 腕周り
-    private Double thigh; // 太もも
+    public WeightRecord() {}
 
-    private String memo; // 備考
+    public WeightRecord(Long userId, Double weight, LocalDateTime recordedAt) {
+        this.userId = userId;
+        this.weight = weight;
+        this.recordedAt = recordedAt;
+    }
 
-    private Timestamp createdAt; // 作成日時
-    private Timestamp updatedAt; // 更新日時
+    public Long getId() {
+        return id;
+    }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public LocalDateTime getRecordedAt() {
+        return recordedAt;
+    }
+
+    public void setRecordedAt(LocalDateTime recordedAt) {
+        this.recordedAt = recordedAt;
+    }
 }

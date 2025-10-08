@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>体重記録</title>
+  <script>
+    const userId = 1; // 仮設定: 後でログインユーザーIDと連携
+
+    async function loadRecords() {
+      const res = await fetch(`/api/weight/${userId}`);
+      const data = await res.json();
+      const list = document.getElementById("records");
+      list.innerHTML = "";
+      data.forEach(r => {
+        const item = document.createElement("li");
+        item.innerHTML = `${r.recordedAt}：${r.weight}kg 
+          <button onclick="deleteRecord(${r.id})">削除</button>`;
+        list.appendChild(item);
+      });
+    }
+
+    async function addRecord() {
+      const weight = document.getElementById("weight").value;
+      await fetch(`/api/weight/${userId}?weight=${weight}`, { method: "POST" });
+      document.getElementById("weight").value = "";
+      loadRecords();
+    }
+
+    async function deleteRecord(id) {
+      await fetch(`/api/weight/${id}`, { method: "DELETE" });
+      loadRecords();
+    }
+
+    window.onload = loadRecords;
+  </script>
+</head>
+<body>
+  <h2>体重記録</h2>
+  <input type="number" id="weight" placeholder="体重 (kg)">
+  <button onclick="addRecord()">登録</button>
+
+  <h3>履歴</h3>
+  <ul id="records"></ul>
+</body>
+</html>
