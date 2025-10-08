@@ -4,9 +4,11 @@ import com.example.weight_log.User;
 import com.example.weight_log.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
+@SpringBootApplication
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
