@@ -28,9 +28,9 @@ public class UserControllerTest {
     void setup() {
         userRepository.deleteAll(); // 前のデータをリセット
         User user = new User();
-        user.setName("Test User");
-        user.setBirthYear(1990);
-        user.setGender("male");
+        user.setMyouji("TestMyouji");
+        user.setNamae("TestNamae");
+        user.setBirth_year(1990);
         testUserId = userRepository.save(user).getId();
     }
 
