@@ -1,78 +1,62 @@
 package com.example.weight_log.controller;
 
-import com.example.weight_log.User;
-import com.example.weight_log.repository.UserRepository;
+import com.example.weight_log.model.User;
+import com.example.weight_log.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
-@SpringBootApplication
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
-    
-    // 全ユーザー取得
+
     @GetMapping
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userService.findAll();
     }
 
-    // IDでユーザー取得
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        return userService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // ユーザー登録
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.save(user));
     }
 
-    // 複数ユーザー登録
-    @PostMapping("/bulk")
-    public List<User> createUsers(@RequestBody List<User> users) {
-    return userRepository.saveAll(users);
-    }
-
-    // ユーザー削除
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
-    }
-
-    // 複数ユーザー削除
-    @DeleteMapping
-    public void deleteUsers(@RequestBody List<Long> ids) {
-        userRepository.deleteAllById(ids);
-    }
-    
-    // ユーザー更新
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return userRepository.findById(id)
-            .map(user -> {
-                user.setMyouji(updatedUser.getMyouji());
-                user.setNamae(updatedUser.getNamae());
-                user.setMyouji_kana(updatedUser.getMyouji_kana());
-                user.setNamae_kana(updatedUser.getNamae_kana());
-                user.setAge(updatedUser.getAge());
-                user.setBirth_year(updatedUser.getBirth_year());
-                user.setBirth_month(updatedUser.getBirth_month());
-                user.setBirth_day(updatedUser.getBirth_day());
-                return userRepository.save(user);
-            })
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        return userService.findById(id)
+                .map(user -> {
+                    user.setMyouji(updatedUser.getMyouji());
+                    user.setNamae(updatedUser.getNamae());
+                    user.setMyouji_kana(updatedUser.getMyouji_kana());
+                    user.setNamae_kana(updatedUser.getNamae_kana());
+                    user.setBirth_year(updatedUser.getBirth_year());
+                    user.setBirth_month(updatedUser.getBirth_month());
+                    user.setBirth_day(updatedUser.getBirth_day());
+                    return ResponseEntity.ok(userService.save(user));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        if (userService.findById(id).isPresent()) {
+            userService.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
