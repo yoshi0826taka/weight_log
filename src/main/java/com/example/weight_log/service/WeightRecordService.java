@@ -1,44 +1,33 @@
 package com.example.weight_log.service;
 
-import com.example.weight_log.WeightRecord;
+import com.example.weight_log.model.WeightRecord;
 import com.example.weight_log.repository.WeightRecordRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class WeightRecordService {
-    
+
     private final WeightRecordRepository repository;
 
-    // コンストラクタインジェクション
     public WeightRecordService(WeightRecordRepository repository) {
         this.repository = repository;
     }
 
-    // ユーザーIDで体重記録を取得
-    public List<WeightRecord> getRecordsByUser(Long userId) {
+    public List<WeightRecord> findByUserId(Long userId) {
         return repository.findByUserId(userId);
     }
 
-    // 体重記録を追加
-    public WeightRecord addRecord(Long userId, Double weight) {
-        WeightRecord record = new WeightRecord(userId, weight, LocalDateTime.now());
+    public Optional<WeightRecord> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    public WeightRecord save(WeightRecord record) {
         return repository.save(record);
     }
 
-    // 体重記録を削除
-    public void deleteRecord(Long id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
-
-    // 体重記録を更新
-    public WeightRecord updateRecord(Long id, Double newWeight) {
-        WeightRecord record = repository.findById(id).orElseThrow();
-        record.setWeight(newWeight);
-        record.setRecordedAt(LocalDateTime.now());
-        return repository.save(record);
-    }
-
 }

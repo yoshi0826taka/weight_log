@@ -1,15 +1,15 @@
-package com.example.weight_Log.controller;
+package com.example.weight_log.controller;
 
-import com.example.weight_log.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.weight_log.model.User;
+import com.example.weight_log.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -20,41 +20,50 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private UserRepository userRepository;
 
-    @Test
-    void AddUserTest() throws Exception {
+    private Long testUserId;
+
+    @BeforeEach
+    void setup() {
+        userRepository.deleteAll(); // 前のデータをリセット
         User user = new User();
-        user.setMyouji("山田");
-        user.setNamae("太郎");
-        user.setMyouji_kana("ヤマダ");
-        user.setNamae_kana("タロウ");
-        user.setBirth_year(1990);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk());
+        user.setName("Test User");
+        user.setBirthYear(1990);
+        user.setGender("male");
+        testUserId = userRepository.save(user).getId();
     }
 
     @Test
-    void UserUpdateTest() throws Exception {
-        User user = new User();
-        user.setMyouji("鈴木");
-        user.setNamae("次郎");
-        user.setMyouji_kana("スズキ");
-        user.setNamae_kana("ジロウ");
-        user.setBirth_day(1995);
-
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/1")
+    void testAddUser() throws Exception {
+        String json = "{\"name\":\"Yamada\",\"birthYear\":1985,\"gender\":\"male\"}";
+        mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk());
+                .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Yamada"));
     }
 
     @Test
-    void DeleteUserTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/1"))
+    void testGetAllUsers() throws Exception {
+        mockMvc.perform(get("/api/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Test User"));
+    }
+
+    @Test
+    void testUpdateUser() throws Exception {
+        String json = "{\"name\":\"Updated User\",\"birthYear\":1995,\"gender\":\"female\"}";
+        mockMvc.perform(put("/api/users/" + testUserId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Updated User"));
+    }
+
+    @Test
+    void testDeleteUser() throws Exception {
+        mockMvc.perform(delete("/api/users/" + testUserId))
                 .andExpect(status().isOk());
     }
 }

@@ -1,44 +1,48 @@
 package com.example.weight_log.controller;
 
-import com.example.weight_log.WeightRecord;
+import com.example.weight_log.model.WeightRecord;
 import com.example.weight_log.service.WeightRecordService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/weight")
+@RequestMapping("/api/records")
 @CrossOrigin(origins = "*")
 public class WeightRecordController {
-    
-    private final WeightRecordService service;
 
-    public WeightRecordController(WeightRecordService service) {
-        this.service = service;
+    private final WeightRecordService recordService;
+
+    public WeightRecordController(WeightRecordService recordService) {
+        this.recordService = recordService;
     }
 
-    // ユーザーIDで体重記録を取得
-    @GetMapping("/{userId}")
-    public List<WeightRecord> getRecords(@PathVariable Long userId) {
-        return service.getRecordsByUser(userId);
+    @GetMapping("/user/{userId}")
+    public List<WeightRecord> getUserRecords(@PathVariable Long userId) {
+        return recordService.findByUserId(userId);
     }
 
-    // 体重記録を追加
-    @PostMapping("/{userId}")
-    public WeightRecord addRecord(@PathVariable Long userId, @RequestBody Double weight) {
-        return service.addRecord(userId, weight);
+    @PostMapping
+    public ResponseEntity<WeightRecord> addRecord(@RequestBody WeightRecord record) {
+        return ResponseEntity.ok(recordService.save(record));
     }
 
-    // 体重記録を削除
-    @DeleteMapping("/{recordId}")
-    public void deleteRecord(@PathVariable Long recordId) {
-        service.deleteRecord(recordId);
+    @PutMapping("/{id}")
+    public ResponseEntity<WeightRecord> updateRecord(@PathVariable Long id, @RequestBody WeightRecord updatedRecord) {
+        return recordService.findById(id)
+                .map(record -> {
+                    record.setWeight(updatedRecord.getWeight());
+                    record.setRecord_date(updatedRecord.getRecord_date());
+                    record.setCondition(updatedRecord.getCondition());
+                    return ResponseEntity.ok(recordService.save(record));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // 体重記録を更新
-    @PutMapping("/{recordId}")
-    public WeightRecord updateRecord(@PathVariable Long recordId, @RequestBody Double weight) {
-        return service.updateRecord(recordId, weight);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecord(@PathVariable Long id) {
+        recordService.delete(id);
+        return ResponseEntity.ok().build();
     }
-
 }

@@ -1,6 +1,7 @@
-package com.example.weight_log;
+package com.example.weight_log.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -45,12 +46,21 @@ public class User {
     // 誕生日
     private Integer birth_day;
     
-    // 性別
-    @Column(name = "created_at", updatable = false, insertable = false)
-    private Timestamp created_at;
+    // 作成日時
+    private LocalDateTime created_at;
 
-    // 登録日時
-    @Column(name = "updated_at", insertable = false)
-    private Timestamp updated_at;
+    // 更新日時
+    private LocalDateTime updated_at;
+
+    @PrePersist
+    public void onCreate() {
+        created_at = LocalDateTime.now(); 
+        updated_at = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        updated_at = LocalDateTime.now();
+    }
     
 }
