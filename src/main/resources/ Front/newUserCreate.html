@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>アカウント作成</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>アカウント作成</h1>
+    <form id="userForm">
+      <div class="form-group">
+        <label>姓（漢字）</label>
+        <input type="text" id="myouji" required />
+      </div>
+
+      <div class="form-group">
+        <label>名（漢字）</label>
+        <input type="text" id="namae" required />
+      </div>
+
+      <div class="form-group">
+        <label>姓（カナ）</label>
+        <input type="text" id="myouji_kana" required />
+      </div>
+
+      <div class="form-group">
+        <label>名（カナ）</label>
+        <input type="text" id="namae_kana" required />
+      </div>
+
+      <div class="form-group">
+        <label>生年月日</label>
+        <div class="birth-group">
+          <input type="number" id="birth_year" placeholder="年 (例:1995)" required />
+          <input type="number" id="birth_month" placeholder="月" min="1" max="12" required />
+          <input type="number" id="birth_day" placeholder="日" min="1" max="31" required />
+        </div>
+      </div>
+
+      <button type="submit" id="submitBtn">登録する</button>
+    </form>
+  </div>
+
+  <script type="module" src="/js/user-create.js"></script>
+
+</body>
+</html>

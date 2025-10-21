@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>User 登録フォーム</title>
+</head>
+<body>
+    <h1>User 登録フォーム</h1>
+    <form action="#" th:action="@{/user-form}" th:object="$P{user}" method="post">
+        苗字: <input type="text" th:field="*{myouji}" /><br/>
+        名前: <input type="text" th:field="*{namae}" /><br/>
+        <button type="submit">登録</button>
+    </form>
+
+    <h2>登録済みユーザー覧</h2>
+    <ul>
+        <li th:each="u : ${#httpServletRequest.getAttribute('users')}"
+            th:text="${u.myouji + ' ' + u.namae}">User</li>
+    </ul>
+</body>
+</html>
