@@ -14,6 +14,12 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> checkUserExists() {
+        boolean exists = userService.existsAnyUser();
+        return ResponseEntity.ok(exists);
+    }
+
     public UserController(UserService userService) {
         this.userService = userService;
     }

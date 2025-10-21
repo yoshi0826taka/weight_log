@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "NodeNext",
+    "strict": true,
+    "outDir": "src/main/resources/static/js/dist",
+    "rootDir": "src/main/resources/static/js",
+    "esModuleInterop": true,
+    "moduleResolution": "NodeNext"
+  },
+  "include": ["src/main/resources/static/js/**/*.ts"]
+}
