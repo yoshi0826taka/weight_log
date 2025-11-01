@@ -20,6 +20,8 @@ public class WeightRecord {
 
     private LocalDate record_date;
     private Double weight;
+
+    @Column(name = "health_condition")
     private String condition;
 
     private LocalDateTime created_at;
