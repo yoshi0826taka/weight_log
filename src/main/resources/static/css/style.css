@@ -11,7 +11,7 @@ body {
   background: white;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(81, 61, 61, 0.1);
   width: 360px;
 }
 
@@ -39,4 +39,75 @@ button {
 
 button:hover {
   background: #45a049;
+}
+
+/* 全体のレイアウト共通設定 */
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  margin: 0;
+  padding-top: 40px;
+}
+
+/* コンテナを中央寄せに */
+.container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 30px 40px;
+  width: 400px;
+}
+
+/* タイトル */
+h1, h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* フォーム */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 入力欄 */
+input[type="text"], input[type="number"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* ボタン */
+button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+/* リストや履歴 */
+.list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.list li {
+  background-color: #f1f1f1;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 5px;
 }

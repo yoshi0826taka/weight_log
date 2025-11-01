@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>体重記録</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/weight_record.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>体重記録</h1>
+    <input type="number" id="weight" placeholder="体重 (kg)">
+    <button onclick="addRecord()">登録</button>
+
+    <div class="list">
+      <h2>履歴</h2>
+      <ul id="records"></ul>
+    </div>
+  </div>
+</body>
+</html>

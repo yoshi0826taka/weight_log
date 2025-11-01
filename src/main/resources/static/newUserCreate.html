@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>新規ユーザー登録</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/dist/user-create.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>新規ユーザー登録</h1>
+
+    <!-- TypeScript側と一致 -->
+    <form id="userForm">
+      <div class="form-group">
+        <label for="myouji">姓</label>
+        <input type="text" id="myouji" name="myouji" placeholder="例：田中" required />
+      </div>
+
+      <div class="form-group">
+        <label for="namae">名</label>
+        <input type="text" id="namae" name="namae" placeholder="例：太郎" required />
+      </div>
+
+      <div class="form-group">
+        <label for="myouji_kana">姓（カナ）</label>
+        <input type="text" id="myouji_kana" name="myouji_kana" placeholder="例：タナカ" required />
+      </div>
+
+      <div class="form-group">
+        <label for="namae_kana">名（カナ）</label>
+        <input type="text" id="namae_kana" name="namae_kana" placeholder="例：タロウ" required />
+      </div>
+
+      <div class="form-group">
+        <label for="birth_year">生年月日（年）</label>
+        <input type="number" id="birth_year" name="birth_year" placeholder="例：1999" required />
+      </div>
+
+      <div class="form-group">
+        <label for="birth_month">生年月日（月）</label>
+        <input type="number" id="birth_month" name="birth_month" placeholder="例：8" required />
+      </div>
+
+      <div class="form-group">
+        <label for="birth_day">生年月日（日）</label>
+        <input type="number" id="birth_day" name="birth_day" placeholder="例：26" required />
+      </div>
+
+      <div class="button-area">
+        <button type="submit" id="registerBtn">登録</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,12 +1,28 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "NodeNext",
-    "strict": true,
-    "outDir": "src/main/resources/static/js/dist",
-    "rootDir": "src/main/resources/static/js",
-    "esModuleInterop": true,
-    "moduleResolution": "NodeNext"
+    /* === 出力設定 === */
+    "target": "ES6",                                // 出力するJavaScriptのバージョン
+    "module": "ESNext",                             // モジュール形式（ブラウザ向け）
+    "rootDir": "src/main/resources/static/ts",      // TypeScriptソースのルート
+    "outDir": "src/main/resources/static/js/dist",  // コンパイル後の出力先
+
+    /* === 厳格モード === */
+    "strict": true,                  // 型チェックを厳密に
+    "noImplicitAny": true,           // any型の自動推定を禁止
+    "strictNullChecks": true,        // null/undefinedの扱いを厳密に
+
+    /* === サポート設定 === */
+    "esModuleInterop": true,         // import/export の互換性を確保
+    "forceConsistentCasingInFileNames": true, // 大文字小文字の不一致を検出
+    "skipLibCheck": true,            // node_modulesの型定義チェックをスキップ
+
+    /* === デバッグ支援 === */
+    "sourceMap": true,               // ソースマップ生成（デバッグに便利）
+
+    /* === 実験的設定 === */
+    "allowJs": false,                // JSファイルをTypeScript対象にしない
+    "removeComments": true           // 出力ファイルからコメントを削除
   },
-  "include": ["src/main/resources/static/js/**/*.ts"]
+  "include": ["src/main/resources/static/ts/**/*"], // 対象のTSファイル
+  "exclude": ["node_modules", "target"]             // 除外対象
 }
