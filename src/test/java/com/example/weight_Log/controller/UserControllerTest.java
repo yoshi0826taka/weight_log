@@ -31,34 +31,36 @@ public class UserControllerTest {
         user.setMyouji("TestMyouji");
         user.setNamae("TestNamae");
         user.setBirth_year(1990);
+        user.setEmail("test@example.com");
+        user.setPassword("secret");
         testUserId = userRepository.save(user).getId();
     }
 
     @Test
     void testAddUser() throws Exception {
-        String json = "{\"name\":\"Yamada\",\"birthYear\":1985,\"gender\":\"male\"}";
-        mockMvc.perform(post("/api/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Yamada"));
+    String json = "{\"myouji\":\"Yamada\",\"namae\":\"Taro\",\"birth_year\":1985,\"email\":\"yamada@example.com\",\"password\":\"pwd\"}";
+    mockMvc.perform(post("/api/users")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(json))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.myouji").value("Yamada"));
     }
 
     @Test
     void testGetAllUsers() throws Exception {
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("Test User"));
+                .andExpect(jsonPath("$[0].myouji").value("TestMyouji"));
     }
 
     @Test
     void testUpdateUser() throws Exception {
-        String json = "{\"name\":\"Updated User\",\"birthYear\":1995,\"gender\":\"female\"}";
-        mockMvc.perform(put("/api/users/" + testUserId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Updated User"));
+    String json = "{\"myouji\":\"UpdatedMyouji\",\"namae\":\"UpdatedNamae\",\"birth_year\":1995,\"email\":\"updated@example.com\",\"password\":\"newpwd\"}";
+    mockMvc.perform(put("/api/users/" + testUserId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(json))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.myouji").value("UpdatedMyouji"));
     }
 
     @Test
