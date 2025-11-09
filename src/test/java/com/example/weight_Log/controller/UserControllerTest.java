@@ -31,6 +31,8 @@ public class UserControllerTest {
         user.setMyouji("TestMyouji");
         user.setNamae("TestNamae");
         user.setBirth_year(1990);
+        user.setBirth_month(1);
+        user.setBirth_day(1);
         user.setEmail("test@example.com");
         user.setPassword("secret");
         testUserId = userRepository.save(user).getId();
@@ -38,7 +40,7 @@ public class UserControllerTest {
 
     @Test
     void testAddUser() throws Exception {
-    String json = "{\"myouji\":\"Yamada\",\"namae\":\"Taro\",\"birth_year\":1985,\"email\":\"yamada@example.com\",\"password\":\"pwd\"}";
+    String json = "{\"myouji\":\"Yamada\",\"namae\":\"Taro\",\"birth_year\":1985,\"birth_month\":8,\"birth_day\":15,\"email\":\"yamada@example.com\",\"password\":\"password1\"}";
     mockMvc.perform(post("/api/users")
         .contentType(MediaType.APPLICATION_JSON)
         .content(json))
@@ -55,7 +57,7 @@ public class UserControllerTest {
 
     @Test
     void testUpdateUser() throws Exception {
-    String json = "{\"myouji\":\"UpdatedMyouji\",\"namae\":\"UpdatedNamae\",\"birth_year\":1995,\"email\":\"updated@example.com\",\"password\":\"newpwd\"}";
+    String json = "{\"myouji\":\"UpdatedMyouji\",\"namae\":\"UpdatedNamae\",\"birth_year\":1995,\"birth_month\":6,\"birth_day\":20,\"email\":\"updated@example.com\",\"password\":\"newpassword\"}";
     mockMvc.perform(put("/api/users/" + testUserId)
         .contentType(MediaType.APPLICATION_JSON)
         .content(json))

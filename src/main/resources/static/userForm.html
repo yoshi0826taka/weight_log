@@ -12,7 +12,10 @@
     <div class="list">
       <h2>登録済みユーザー一覧</h2>
       <ul>
-        <li th:each="u : ${users}" th:text="${u.myouji + ' ' + u.namae}"></li>
+        <li th:each="u : ${users}">
+          <span th:text="${u.myouji + ' ' + u.namae}"></span>
+          <small th:text="${' (' + u.email + ')'}"></small>
+        </li>
       </ul>
     </div>
 

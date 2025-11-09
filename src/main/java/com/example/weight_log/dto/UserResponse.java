@@ -3,6 +3,10 @@ package com.example.weight_log.dto;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+/**
+ * ユーザー情報をクライアントに返却するための DTO。
+ * パスワード等の機密情報は含めません。
+ */
 @Data
 public class UserResponse {
     private Long id;

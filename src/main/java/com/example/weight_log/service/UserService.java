@@ -9,6 +9,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+/**
+ * ユーザー関連の業務ロジックを提供するサービスクラス。
+ * 主にリポジトリ経由でユーザーの検索・作成・更新・削除を行い、
+ * パスワードのハッシュ化（BCrypt）などの横断的な処理を担います。
+ *
+ * 想定される利用:
+ * - コントローラからの入力を受けて永続化を行う
+ * - パスワードを安全に保存するためにハッシュ化を行う
+ */
 @Service
 public class UserService {
 
@@ -27,8 +36,19 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    /**
+     * ユーザーを保存します。パスワードがプレーンテキストで渡された場合は
+     * BCrypt でハッシュ化して保存します。既にハッシュ済みの文字列は再ハッシュしません。
+     *
+     * @param user 保存対象のユーザーエンティティ
+     * @return 保存されたユーザーエンティティ
+     */
     public User save(User user) {
-        // Hash password if provided and not already bcrypt
+        // パスワードが渡された場合は BCrypt ハッシュ化する（既にハッシュ済みなら再ハッシュしない）
         if (user.getPassword() != null && !user.getPassword().isBlank()) {
             String pw = user.getPassword();
             if (!BCRYPT_PATTERN.matcher(pw).matches()) {

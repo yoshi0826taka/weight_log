@@ -10,6 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * ユーザー管理用の REST コントローラ。
+ * 提供する主な機能:
+ * - ユーザー一覧の取得
+ * - 単一ユーザーの取得/作成/更新/削除
+ *
+ * 入力は `UserRequest`、出力は `UserResponse` を使用してエンティティの内部情報（password など）を露出しない設計にしています。
+ */
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
@@ -21,6 +29,10 @@ public class UserController {
         this.userService = userService;
     }
     
+    /**
+     * 初期ユーザーの存在確認用エンドポイント。
+     * フロントエンドの初期化処理などで使用します。
+     */
     @GetMapping("/exists")
     public ResponseEntity<Boolean> checkUserExists() {
         boolean exists = userService.existsAnyUser();
@@ -40,15 +52,23 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * ユーザー作成。
+     * バリデーションは `UserRequest` に定義されています。
+     */
     @PostMapping
-    public ResponseEntity<UserResponse> addUser(@RequestBody UserRequest req) {
+    public ResponseEntity<UserResponse> addUser(@jakarta.validation.Valid @RequestBody UserRequest req) {
         User user = toEntity(req);
         User saved = userService.save(user);
         return ResponseEntity.ok(toDto(saved));
     }
 
+    /**
+     * ユーザー更新（部分更新を許容）。
+     * クライアントは更新したいフィールドのみ送信できます。
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody UserRequest updatedUser) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @jakarta.validation.Valid @RequestBody UserRequest updatedUser) {
         return userService.findById(id)
                 .map(user -> {
                     // copy updatable fields
