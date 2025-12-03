@@ -40,15 +40,22 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+        // メールアドレスでユーザーを検索
         Optional<User> opt = userService.findByEmail(req.getEmail());
         if (opt.isEmpty()) {
+            // ユーザーが存在しない場合は認証失敗
             return ResponseEntity.status(401).body("invalid credentials");
         }
         User u = opt.get();
+
+        // パスワードチェック（保存は BCrypt ハッシュ）
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(req.getPassword(), u.getPassword())) {
+        // 注意: u.getPassword() が null の可能性がある場合は適切に取り扱う
+        if (u.getPassword() == null || !encoder.matches(req.getPassword(), u.getPassword())) {
             return ResponseEntity.status(401).body("invalid credentials");
         }
+
+        // 認証成功: ユーザーIDを subject として JWT を発行
         String token = jwtUtil.generateToken(String.valueOf(u.getId()));
         LoginResponse res = new LoginResponse();
         res.setToken(token);

@@ -27,7 +27,9 @@ public class JwtUtil {
     private long expirationMs;
 
     private Key getSigningKey() {
-        // Use the provided secret (keep it long enough in production)
+        // シークレットから HMAC-SHA キーを生成します。
+        // 注意: JJWT の hmacShaKeyFor は十分な長さのバイト列を要求します（最低 256 ビット推奨）。
+        // 短いシークレットを渡すと実行時に例外が発生するため、開発時でも適切な長さを使用してください。
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 

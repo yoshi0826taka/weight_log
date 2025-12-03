@@ -96,6 +96,8 @@ public class UserController {
     }
 
     private UserResponse toDto(User u) {
+        // エンティティから外部公開用 DTO に変換するヘルパー
+        // password や内部の管理情報は DTO に含めないこと
         UserResponse r = new UserResponse();
         r.setId(u.getId());
         r.setMyouji(u.getMyouji());
@@ -113,6 +115,8 @@ public class UserController {
     }
 
     private User toEntity(UserRequest req) {
+        // リクエスト DTO から新規 User エンティティを作る
+        // 注意: パスワードはプレーンで入るため、保存時にサービス層でハッシュ化されます
         User u = new User();
         u.setMyouji(req.getMyouji());
         u.setNamae(req.getNamae());
