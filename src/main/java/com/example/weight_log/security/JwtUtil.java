@@ -49,4 +49,20 @@ public class JwtUtil {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    /**
+     * JWT トークンから subject（ユーザーID）を抽出します。
+     *
+     * @param token JWT トークン文字列
+     * @return トークンに埋め込まれた subject（ユーザーID）
+     * @throws io.jsonwebtoken.JwtException トークンが無効な場合
+     */
+    public String extractSubject(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
 }
