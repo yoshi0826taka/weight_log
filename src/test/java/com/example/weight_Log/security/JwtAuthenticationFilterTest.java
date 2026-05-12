@@ -43,7 +43,13 @@ public class JwtAuthenticationFilterTest {
     private Long testUserId;
     private final String TEST_EMAIL = "jwt-test@example.com";
     private final String TEST_PASSWORD = "password123";
-
+    
+    /**
+     * テスト前のセットアップ:
+     * - ユーザーデータベースをクリーンアップ
+     * - テスト用ユーザーを作成
+     * - 有効な JWT トークンを生成
+     */
     @BeforeEach
     void setup() {
         userRepository.deleteAll();
@@ -64,6 +70,10 @@ public class JwtAuthenticationFilterTest {
         validToken = jwtUtil.generateToken(String.valueOf(testUserId));
     }
 
+    /**
+     * ログイン成功で JWT トークンが発行されることを確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("ログイン成功でJWTトークンが発行される")
     void testLoginSuccess() throws Exception {
@@ -79,6 +89,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(jsonPath("$.token").exists());
     }
 
+    /**
+     * 無効なメールアドレスでのログイン失敗を確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("無効なメールアドレスでのログイン失敗")
     void testLoginFailureWithInvalidEmail() throws Exception {
@@ -90,6 +104,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    /**
+     * 無効なパスワードでのログイン失敗を確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("無効なパスワードでのログイン失敗")
     void testLoginFailureWithInvalidPassword() throws Exception {
@@ -104,6 +122,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    /**
+     * 有効なトークンで保護されたエンドポイントにアクセスできることを確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("有効なトークンで保護エンドポイントにアクセス可能")
     void testAccessProtectedEndpointWithValidToken() throws Exception {
@@ -112,6 +134,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isOk());
     }
 
+    /**
+     * 無効なトークンで保護エンドポイントにアクセスできないことを確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("無効なトークンで保護エンドポイントアクセス拒否")
     void testAccessProtectedEndpointWithInvalidToken() throws Exception {
@@ -120,6 +146,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isForbidden());
     }
 
+    /**
+     * トークンなしで保護されたエンドポイントにアクセスできないことを確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("トークンなしで保護エンドポイントアクセス拒否")
     void testAccessProtectedEndpointWithoutToken() throws Exception {
@@ -127,6 +157,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isForbidden());
     }
 
+    /**
+     * Bearer 形式でない Authorization ヘッダーが無視されることを確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("Bearer形式でないヘッダーは無視される")
     void testInvalidAuthorizationHeaderFormat() throws Exception {
@@ -135,6 +169,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isForbidden());
     }
 
+    /**
+     * 存在確認エンドポイントはトークン不要であることを確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("存在確認エンドポイントはトークン不要")
     void testUserExistsEndpointDoesNotRequireToken() throws Exception {
@@ -142,6 +180,10 @@ public class JwtAuthenticationFilterTest {
                 .andExpect(status().isOk());
     }
 
+    /**
+     * 体重記録取得エンドポイントは認証が必要であることを確認するテスト。
+     * @throws Exception
+     */
     @Test
     @DisplayName("体重記録取得は認証が必要")
     void testWeightRecordEndpointRequiresAuthentication() throws Exception {

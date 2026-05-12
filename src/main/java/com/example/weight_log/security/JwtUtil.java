@@ -21,11 +21,15 @@ import org.springframework.stereotype.Component;
 public class JwtUtil {
 
     @Value("${app.jwt.secret:changeit}")
-    private String secret;
+    private String secret; // JWT 署名に使用するシークレットキー（開発用のデフォルト値を設定）
 
     @Value("${app.jwt.expiration-ms:3600000}")
-    private long expirationMs;
+    private long expirationMs; // JWT の有効期限（ミリ秒、デフォルトは1時間）
 
+    /**
+     * JWT 署名に使用するキーを取得
+     * @return
+     */
     private Key getSigningKey() {
         // シークレットから HMAC-SHA キーを生成します。
         // 注意: JJWT の hmacShaKeyFor は十分な長さのバイト列を要求します（最低 256 ビット推奨）。

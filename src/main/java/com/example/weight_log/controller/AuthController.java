@@ -46,6 +46,8 @@ public class AuthController {
             // ユーザーが存在しない場合は認証失敗
             return ResponseEntity.status(401).body("invalid credentials");
         }
+
+        // ユーザーが存在する場合はパスワードをチェック
         User u = opt.get();
 
         // パスワードチェック（保存は BCrypt ハッシュ）
@@ -59,6 +61,8 @@ public class AuthController {
         String token = jwtUtil.generateToken(String.valueOf(u.getId()));
         LoginResponse res = new LoginResponse();
         res.setToken(token);
-        return ResponseEntity.ok(res);
+
+        // トークンを返す
+        return ResponseEntity.ok(res); // 200 OK + { token: "..." }
     }
 }
