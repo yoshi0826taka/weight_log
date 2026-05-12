@@ -5,6 +5,15 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 体重記録を表すエンティティ。
+ * テーブル: weight_records
+ * フィールド:
+ * - user: 記録の所有者（User エンティティへの多対一）
+ * - record_date: 記録日
+ * - weight: 体重（kg）
+ * - condition: 健康状態やメモ
+ */
 @Entity
 @Table(name = "weight_records")
 @Data

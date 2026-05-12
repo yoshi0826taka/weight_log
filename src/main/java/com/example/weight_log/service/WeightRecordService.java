@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 体重記録（WeightRecord）に関する業務ロジックを扱うサービスクラス。
+ * - 指定ユーザーの記録を取得、保存、削除する機能を提供します。
+ */
 @Service
 public class WeightRecordService {
 
@@ -24,6 +28,7 @@ public class WeightRecordService {
     }
 
     public WeightRecord save(WeightRecord record) {
+        // 必要であればここで前処理（入力補正や検証）を行えます
         return repository.save(record);
     }
 

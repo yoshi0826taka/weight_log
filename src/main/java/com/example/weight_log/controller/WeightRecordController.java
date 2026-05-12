@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 体重記録の REST API を提供するコントローラ。
+ * 主な機能:
+ * - ユーザーごとの記録一覧取得
+ * - 記録の作成 / 更新 / 削除
+ */
 @RestController
 @RequestMapping("/api/records")
 @CrossOrigin(origins = "*")
@@ -18,6 +24,10 @@ public class WeightRecordController {
         this.recordService = recordService;
     }
 
+    /**
+     * 指定ユーザーの体重記録一覧を返す。
+     * @param userId ユーザーID
+     */
     @GetMapping("/user/{userId}")
     public List<WeightRecord> getUserRecords(@PathVariable Long userId) {
         return recordService.findByUserId(userId);

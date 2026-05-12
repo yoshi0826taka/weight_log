@@ -3,21 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>ユーザー選択</title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <script src="/js/dist/user-form.js" defer></script>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <div class="container">
-    <h1>体重管理アプリ</h1>
-    <h2>ユーザーを選択してください</h2>
+    <h1>ユーザー選択</h1>
 
-    <ul id="userList">
-      <li>読み込み中...</li>
-    </ul>
+    <div class="list">
+      <h2>登録済みユーザー一覧</h2>
+      <ul>
+        <li th:each="u : ${users}">
+          <span th:text="${u.myouji + ' ' + u.namae}"></span>
+          <small th:text="${' (' + u.email + ')'}"></small>
+        </li>
+      </ul>
+    </div>
 
+    <!-- 🔽 ユーザー登録ボタン  -->
     <div class="button-area">
-      <button id="createUserBtn">＋ 新規ユーザー登録</button>
+      <button id="newUserBtn">新規ユーザー登録</button>
     </div>
   </div>
+
+  <script>
+    document.getElementById("newUserBtn").addEventListener("click", () => {
+      // 新規ユーザー登録画面へ遷移
+      window.location.href = "/newUserCreate.html";
+    });
+  </script>
 </body>
 </html>

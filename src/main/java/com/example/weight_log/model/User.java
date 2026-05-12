@@ -1,14 +1,12 @@
 package com.example.weight_log.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
@@ -33,6 +31,14 @@ public class User {
 
     // メイ
     private String namae_kana;
+
+    // メールアドレス（ログイン用）
+    @Column(unique = true)
+    private String email;
+
+    // パスワード（ハッシュ化）
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 
     // 年齢
     private Integer age; 
